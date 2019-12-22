@@ -1,0 +1,15 @@
+# Companion-rule-list
+For the paper Companion rule list
+This is the code for the paper Companion rule list.
+
+
+We use 80% data to train the model and the result was reflexed on the left 20% data.
+Usage:
+->parameters:
+--file: binarized data, last column should be the label
+--blx_file: black box classification label
+--alpha: hyper parameter to control rule length, default 0.01
+--step: training steps, default 10000
+--card: rule cardinality, default 2
+--supp: rule mining min support, keep rules cover > support, default 0.05
+--n: number of positive and negtive rules, defaule 100
