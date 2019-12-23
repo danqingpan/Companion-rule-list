@@ -440,7 +440,7 @@ if __name__ == '__main__':
     # blx prediction of the same observations
     parser.add_argument("--blx_file", help = 'blackbox labels',default = 'rf_adult.csv')
     # alpha to control the rule list length
-    parser.add_argument("--alpha",help = 'regularizaition parameter', default = 0.0002)
+    parser.add_argument("--alpha",help = 'regularizaition parameter', default = 0.001)
     # number of iterations
     parser.add_argument("--step", help = 'train step', default = 20000)
     # max number of rules
