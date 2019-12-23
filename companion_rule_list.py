@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+This is the code for paper Companion rule list
 
 @author: DQ
 """
+
 
 import numpy as np
 import pandas as pd 
@@ -17,7 +19,9 @@ import argparse
 
 
 def screen_rules(rules,df,y,N,supp):
-
+    
+    # This function screen rules by supporting rate
+    
     itemInd = {}
     for i,name in enumerate(df.columns):
         itemInd[name] = int(i)
@@ -67,18 +71,18 @@ def accumulate(iterable, func = operator.add):
 
 def propose_rule(rule_sequence,premined):
     
-    # this function propose a new rule based on the previous rule
+    # This function propose a new rule based on the previous rule
     
     premined_rules = premined.copy()
     rule_seq = rule_sequence.copy()
     
-    # no rule reuse
+    # No rule reuse
     for i in range(len(rule_seq)):
         premined_rules.remove(rule_seq[i])
     
     rand = random.random()
     
-    # we use 4 operations to generate a new rule
+    # We use 4 operations to generate a new rule
     
     if (rand < 0.25):
         #print('add')
@@ -173,6 +177,7 @@ def compute_support(rule,support_map,cover_map,cov_blx,start):
 
 def compute_obj(new_rule_n,prev_rule_n,support_map,cover_map,cov_blx,Y,Alpha,c,A,choose):
     
+    # This function compute objective function
     k = len(new_rule_n)
     
     # prev_rule and support_map match
@@ -225,7 +230,10 @@ def compute_obj(new_rule_n,prev_rule_n,support_map,cover_map,cov_blx,Y,Alpha,c,A
 
 
 def simulated_annealing(init_rule,init_T,Alpha,iteration):
-    # the value used to decide whether accept new obj
+    
+    # The main loop of simulated annealing
+    
+    # temperature
     temperature = init_T
     
     obj_p,chosen,A = 0.1,[],[]
@@ -277,6 +285,8 @@ def simulated_annealing(init_rule,init_T,Alpha,iteration):
                 obj_p,prev_rule,c,A,support_map,cover_map,cov_blx,chosen = obj_c,rule_proposed,c_new,A_new,new_support_map,new_cover_map,new_cov_blx,chosen_new
 
         temperature = init_T/math.log(2+t)
+
+        #other options for updating temperature
         #temperature = temperature*0.999
         #temperature = init_T**(t/iteration)
         
@@ -290,7 +300,9 @@ def simulated_annealing(init_rule,init_T,Alpha,iteration):
 
 
 def compute_start(new_rule,prev_rule):
-    # a func to find where to start the computation
+    
+    # This function is to find where to start the computation
+    # We use this mechanism to speed up the algorithm
     # before start, it is copy
     
     start = 0
@@ -312,7 +324,8 @@ def compute_start(new_rule,prev_rule):
 
 def gen_rule(df_combine,Y,Supp,Maxlen,N):
     
-    # mine rules using FP-growth
+    # generate rules using FP-growth algorithm
+    
     df_combine = 1 - df_combine
     
     itemMatrix = [[item for item in df_combine.columns if row[item] == 1] for i,row in df_combine.iterrows()]
@@ -337,6 +350,9 @@ def gen_rule(df_combine,Y,Supp,Maxlen,N):
 
 def gen_blx_pred(df_part_bin,train_num,blx_train_num,blx_model):
     
+    # This function is used to train blx models
+    # not used
+    
     df_part_bin = np.array(df_part_bin)
     blx_train_data = df_part_bin[train_num:train_num+blx_train_num,:-1]
     blx_train_label = df_part_bin[train_num:train_num+blx_train_num,-1]
@@ -349,9 +365,11 @@ def gen_blx_pred(df_part_bin,train_num,blx_train_num,blx_model):
 
 
 def mine_rule(maxlen,supp,n,num_data_mine,flag):
-    # mine rules
     
-    # use max 5000 observations to mine rules
+    # mine rules
+    # use flag to choose between mining or using previouly mined rules
+    
+    # use max num_data_mine observations to mine rules
     rule_mining_data = df.shape[0] if df.shape[0]<num_data_mine else num_data_mine
     
     if flag:
@@ -366,11 +384,12 @@ def mine_rule(maxlen,supp,n,num_data_mine,flag):
 
 
 def test(test_data,test_label,test_Yb,chosen,rule):
-# the rules
+
+    # use test data to test the rule list
     output_rules = [premined_rules[rule[i]] for i in range(len(rule))]
     catch_list = np.array([-1]*test_data.shape[0])
     
-    # data caught by which rule
+    # to show observation is caught by which rule
     for i in range(test_data.shape[0]):
         for j in range(len(output_rules)):
             match = True
@@ -391,16 +410,21 @@ def test(test_data,test_label,test_Yb,chosen,rule):
     blx_cover_set = set(range(test_data.shape[0]))
     
     for i in range(len(output_rules)):
+        # observation num caught by rule i
         rule_catch = np.where(catch_list==i)[0]
+        # the accumulated rules catch by rule list
         rule_coverd_set = rule_coverd_set.union(set(rule_catch))
+        # the left part is then caught by blx model
         blx_cover = blx_cover_set.difference(rule_coverd_set)
-        
+        # blx cover rate
         blx_cover_rate[i] = len(blx_cover)/(test_data.shape[0]+0.0001)
+        # blx accuracy
         blx_acc.append(sum(test_Yb[list(blx_cover)]==test_label[list(blx_cover)])/(len(blx_cover)+0.0001))
         # cover rate and accuracy of rules
         test_cover_rate[i] = len(rule_catch)/(test_data.shape[0]+0.0001)
         test_acc.append(sum(test_label[rule_catch] == chosen[i])/len(rule_catch))
     
+    # the overall accuracy of hybrid models
     test_overall_acc = [sum([test_cover_rate[i]*test_acc[i] for i in range(j+1)])+blx_cover_rate[j]*blx_acc[j] for j in range(len(output_rules))]
     
     return test_overall_acc,output_rules,test_cover_rate,test_acc
@@ -411,14 +435,19 @@ if __name__ == '__main__':
     # data for train
     
     parser = argparse.ArgumentParser()
-
+    # train data, last column is label
     parser.add_argument("--file",help = 'binarized file', default = 'adult.csv')
+    # blx prediction of the same observations
     parser.add_argument("--blx_file", help = 'blackbox labels',default = 'rf_adult.csv')
+    # alpha to control the rule list length
     parser.add_argument("--alpha",help = 'regularizaition parameter', default = 0.0002)
-
+    # number of iterations
     parser.add_argument("--step", help = 'train step', default = 20000)
+    # max number of rules
     parser.add_argument("--card", help = 'cardinality',default = 2)
+    # minimal support when choosing rules
     parser.add_argument("--supp", help = 'rule mining support', default = 0.05)
+    # number of rules used for both position and negative side
     parser.add_argument("--n", help = 'number of rules', default = 200)
     
     args = parser.parse_args()
@@ -432,12 +461,11 @@ if __name__ == '__main__':
     supp = args.supp
     n = args.n
     
-    #alpha = 0.001
-    #T = 1000 # iterations
-    #maxlen = 2; supp = 0.05; n = 100;     
+    # mine rules from num_data_mine observations
     num_data_mine = 10000
-    # the ratio of training data
-    ratio = 0.8
+    # the ratio of training data, 0.8 represents 80% as training data 20% as test data
+    ratio = 0.5
+    # mine rules or use saved rules
     flag = 1
     init_temperature = 0.001  # penalty, smaller -> more rles    
 
