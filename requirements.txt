@@ -1,0 +1,12 @@
+requirement:
+
+bitarray --> https://pypi.org/project/bitarray/
+fim --> http://www.borgelt.net/pyfim.html
+numpy
+pandas
+itertools
+operator
+scipy
+maptlotlib
+math
+argparse
