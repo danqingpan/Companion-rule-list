@@ -22,9 +22,11 @@ lib list:
 ### Prepare data:
 Data should be prepared in binary form. <br>
 e.g. <br>
-age   gender  y <br>
-20    0       0 <br>
-30    1       1 <br>
+
+age|gender|y 
+---- | ----- | ------
+20|0|0 
+30|1|1 
 
 ### Set Parameters:
 * --file: binarized data, last column should be the label, default as adult.csv
