@@ -1,4 +1,4 @@
-## Description:
+# Description:
 This is the code for paper [Companion rule list]. In this paper, we designed a model(CRL) with flexible interpretability.
 This model provides a seris of hybrid submodels with different transparency. The input data should be in a binarized form.
 In the example, we use 80% data(adult) to train the model and the result was reflexed on the left 20% data. 
