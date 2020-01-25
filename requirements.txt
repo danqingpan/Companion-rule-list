@@ -1,12 +1,16 @@
-# requirement
+Requirement
 
-bitarray --> https://pypi.org/project/bitarray/
-fim --> http://www.borgelt.net/pyfim.html
-numpy
-pandas
-itertools
-operator
-scipy
-maptlotlib
-math
-argparse
+To run this program, we need common libs such as numpy ro pandas.
+Especially, bitarray and fim are necessary to run the program.
+
+lib list:
+1.bitarray --> https://pypi.org/project/bitarray/
+2.fim --> http://www.borgelt.net/pyfim.html
+3.numpy
+4.pandas
+5.itertools
+6.operator
+7.scipy
+8.maptlotlib
+9.math
+10.argparse
