@@ -19,13 +19,13 @@ lib list:
 * argparse
 
 ## Usage:
-Prepare data:
+### Prepare data:
 Data should be prepared in binary form. e.g.
 age   gender  y
 20    0       0
 30    1       1
 
-Set Parameters:
+### Set Parameters:
 --file: binarized data, last column should be the label, default as adult.csv
 --blx_file: black box classification label, default as rf_adult.csv
 --alpha: hyper parameter to control rule length, default as 0.001
