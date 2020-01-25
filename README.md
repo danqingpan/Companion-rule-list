@@ -1,26 +1,45 @@
-# Description:
-This is the code for paper [Companion rule list]. In this paper, we designed a model(CRL) with flexible interpretability.
-This model provides a seris of hybrid submodels with different transparency. The input data should be in a binarized form.
-In the example, we use 80% data(adult) to train the model and the result was reflexed on the left 20% data. 
-This value is adjustable by setting parameter 'ratio' in the program.
-A file containing black box prediction for the data should be prepared before training.
+# Companion Rule List
+Python code for Companion rule list. 
+
+## Requirements
+To run this program, we need common libs such as numpy ro pandas.
+Especially, bitarray and fim are necessary to run the program.
+
+lib list:
+* python 3.6
+* bitarray
+* fim
+* numpy
+* pandas
+* itertools
+* operator
+* scipy
+* maptlotlib
+* math
+* argparse
 
 ## Usage:
-1. Install associated libs.
-2. Download the code.
-3. Run.
+### Prepare data:
+Data should be prepared in binary form. e.g.
+age   gender  y
+20    0       0
+30    1       1
 
-## Parameters:
---file: binarized data, last column should be the label, default adult.csv
---blx_file: black box classification label, default rf_adult.csv
---alpha: hyper parameter to control rule length, default 0.001
---step: training steps, default 20000
---card: rule cardinality, default 2
---supp: rule mining min support, keep rules cover > support, default 0.05
---n: number of positive and negtive rules, defaule 200
+### Set Parameters:
+* --file: binarized data, last column should be the label, default as adult.csv
+* --blx_file: black box classification label, default as rf_adult.csv
+* --alpha: hyper parameter to control rule length, default as 0.001
+* --step: training steps, default as 20000
+* --card: rule cardinality, default as 2
+* --supp: rule mining min support, keep rules cover > support, default as 0.05
+* --n: number of positive and negtive rules, defaule as 200
 
 ## Rusult form
-[if condition_1 is 1/0 and condition_2 is 1/0, then y= 1/0. transparency = ?, accuracy = ?]
+The output form of the program is shown as follows:
+[if condition_1 is 1/0 and condition_2 is 1/0, then y= 1/0. transparency = 20%, accuracy = 90%]
+[if condition_3 is 1/0 and condition_4 is 1/0, then y= 1/0. transparency = 40%, accuracy = 88%]
 ...
-Here, condition_1 and condition_2 are data features and y is the prediction. 
-Accuracy represents the prediction performance of hybrid models with different number of rules.
+
+* condition_1 and condition_2 represents the condition for making decision. 
+* Transparency represents the proportion of data classified by the rule list.
+* Accuracy represents the prediction performance of hybrid models with corresponding number of rules.
