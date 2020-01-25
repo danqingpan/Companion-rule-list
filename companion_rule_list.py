@@ -436,9 +436,9 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser()
     # train data, last column is label
-    parser.add_argument("--file",help = 'binarized file', default = 'adult.csv')
+    parser.add_argument("--file",help = 'binarized file')
     # blx prediction of the same observations
-    parser.add_argument("--blx_file", help = 'blackbox labels',default = 'rf_adult.csv')
+    parser.add_argument("--blx_file", help = 'blackbox labels')
     # alpha to control the rule list length
     parser.add_argument("--alpha",help = 'regularizaition parameter', default = 0.001)
     # number of iterations
