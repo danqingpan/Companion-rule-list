@@ -19,7 +19,7 @@ A file containing black box prediction for the data should be prepared before tr
 --supp: rule mining min support, keep rules cover > support, default 0.05
 --n: number of positive and negtive rules, defaule 200
 
-## Rusult has the form
+## Rusult form
 [if condition_1 is 1/0 and condition_2 is 1/0, then y= 1/0. transparency = ?, accuracy = ?]
 ...
 Here, condition_1 and condition_2 are data features and y is the prediction. 
