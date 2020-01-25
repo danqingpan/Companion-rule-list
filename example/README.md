@@ -8,3 +8,7 @@ age|gender|y
 ---- | ----- | ------
 20|0|0 
 30|1|1 
+
+## Test program
+* Install required libs.
+* Run python file.
