@@ -26,13 +26,13 @@ age   gender  y
 30    1       1
 
 ### Set Parameters:
---file: binarized data, last column should be the label, default as adult.csv
---blx_file: black box classification label, default as rf_adult.csv
---alpha: hyper parameter to control rule length, default as 0.001
---step: training steps, default as 20000
---card: rule cardinality, default as 2
---supp: rule mining min support, keep rules cover > support, default as 0.05
---n: number of positive and negtive rules, defaule as 200
+* --file: binarized data, last column should be the label, default as adult.csv
+* --blx_file: black box classification label, default as rf_adult.csv
+* --alpha: hyper parameter to control rule length, default as 0.001
+* --step: training steps, default as 20000
+* --card: rule cardinality, default as 2
+* --supp: rule mining min support, keep rules cover > support, default as 0.05
+* --n: number of positive and negtive rules, defaule as 200
 
 ## Rusult form
 The output form of the program is shown as follows:
